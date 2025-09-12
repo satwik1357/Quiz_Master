@@ -1,0 +1,198 @@
+{% extends "admin/admin_layout.html" %} {% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div
+          class="card-header bg-primary text-white d-flex align-items-center"
+        >
+          <h4 class="m-0">Add New Question</h4>
+        </div>
+        <div class="card-body px-4">
+          {% if error %}
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+          {% endif %}
+
+          <form action="/add_question/{{quiz_id}}/{{name}}" method="POST">
+            <div class="mb-4">
+              <label for="question_statement" class="form-label"
+                >Question Text</label
+              >
+              <textarea
+                class="form-control"
+                name="question_statement"
+                id="question_statement"
+                rows="3"
+                placeholder="Enter your question here"
+                required
+              ></textarea>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <label for="option1" class="form-label">Option 1</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="option1"
+                  id="option1"
+                  placeholder="Enter option 1"
+                  required
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="option2" class="form-label">Option 2</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="option2"
+                  id="option2"
+                  placeholder="Enter option 2"
+                  required
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="option3" class="form-label">Option 3</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="option3"
+                  id="option3"
+                  placeholder="Enter option 3"
+                  required
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="option4" class="form-label">Option 4</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="option4"
+                  id="option4"
+                  placeholder="Enter option 4"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="correct_option" class="form-label"
+                >Correct Answer</label
+              >
+              <select
+                class="form-select"
+                name="correct_option"
+                id="correct_option"
+                required
+              >
+                <option value="" selected disabled>
+                  Select correct option
+                </option>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+                <option value="option4">Option 4</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label for="marks" class="form-label">Marks</label>
+              <input
+                type="number"
+                class="form-control"
+                name="marks"
+                id="marks"
+                min="1"
+                placeholder="Enter marks for this question"
+                required
+              />
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="/admin/{{name}}" class="btn btn-light">
+                <i class="fas fa-times"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Question
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .card-header {
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1rem 1.5rem;
+  }
+
+  .form-control,
+  .form-select {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: linear-gradient(45deg, #0d6efd, #0a58ca);
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(45deg, #0a58ca, #084298);
+  }
+
+  .btn-light {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+  }
+
+  .btn-light:hover {
+    background: #e9ecef;
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+  }
+
+  .alert {
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+</style>
+{% endblock %}

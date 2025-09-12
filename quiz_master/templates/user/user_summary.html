@@ -1,0 +1,123 @@
+{% extends "user/user_layout.html" %} {% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm mb-4">
+        <div
+          class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+        >
+          <h4 class="m-0">Your Quiz Performance Summary</h4>
+          <a href="/user/{{id}}/{{name}}" class="btn btn-light btn-sm">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          </a>
+        </div>
+        <div class="card-body">
+          {% if error %}
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+          {% elif message %}
+          <div class="alert alert-info" role="alert">{{ message }}</div>
+          {% else %}
+          <!-- Performance Statistics -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="stats-card bg-light p-3 rounded">
+                <h5 class="text-primary mb-2">Total Quizzes Attempted</h5>
+                <h3 class="m-0">{{ stats.total_quizzes }}</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stats-card bg-light p-3 rounded">
+                <h5 class="text-primary mb-2">Average Score</h5>
+                <h3 class="m-0">{{ stats.average_score }}</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stats-card bg-light p-3 rounded">
+                <h5 class="text-primary mb-2">Highest Score</h5>
+                <h3 class="m-0">{{ stats.highest_score }}</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Graph -->
+          {% if plot_url %}
+          <div class="text-center mb-4">
+            <img
+              src="data:image/png;base64,{{ plot_url }}"
+              alt="Quiz Performance Graph"
+              class="img-fluid rounded"
+              style="max-width: 100%; height: auto"
+            />
+          </div>
+          {% endif %}
+
+          <!-- Detailed Scores -->
+          {% if stats.scores %}
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Quiz Name</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for quiz_name, score in stats.scores %}
+                <tr>
+                  <td>{{ quiz_name }}</td>
+                  <td>
+                    <span
+                      class="badge bg-{{ 'success' if score >= 80 else 'warning' if score >= 60 else 'danger' }}"
+                    >
+                      {{ score }}
+                    </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %} {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stats-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .stats-card:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+  }
+
+  .stats-card h5 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  .stats-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+  }
+
+  .table th {
+    font-weight: 600;
+  }
+
+  .table td {
+    vertical-align: middle;
+  }
+</style>
+{% endblock %}

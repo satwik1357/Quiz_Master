@@ -1,0 +1,13 @@
+{% extends "user/user_layout.html" %}
+{% block content %}
+    <div class="container">
+        <h3 class="center">Quiz Results</h3>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quiz ID: {{ quiz_id }}</h5>
+                <p class="card-text">Your Score: {{ score }}/{{ total }}</p>
+                <a href="/user/{{user.id}}/{{user.full_name}}" class="btn btn-primary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

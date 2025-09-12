@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Quiz Master{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-content">
+        <a href="{{ url_for('index') }}" class="nav-logo">Quiz Master</a>
+        <ul class="nav-links">
+          {% if session.get('user_type') == 'admin' %}
+          <li>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link"
+              >Dashboard</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('manage_quizzes') }}" class="nav-link"
+              >Manage Quizzes</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('manage_users') }}" class="nav-link"
+              >Manage Users</a
+            >
+          </li>
+          {% else %}
+          <li>
+            <a href="{{ url_for('available_quizzes') }}" class="nav-link"
+              >Available Quizzes</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('my_results') }}" class="nav-link"
+              >My Results</a
+            >
+          </li>
+          {% endif %} {% if session.get('user_id') %}
+          <li>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary"
+              >Logout</a
+            >
+          </li>
+          {% else %}
+          <li>
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container text-center mt-3">
+      <p class="text-secondary">
+        &copy; {% now 'Y' %} Quiz Master. All rights reserved.
+      </p>
+    </footer>
+  </body>
+</html>

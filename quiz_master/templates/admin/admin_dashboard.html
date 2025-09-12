@@ -1,0 +1,333 @@
+{% extends "admin/admin_layout.html" %} {% block content %}
+<div class="container py-4">
+  <!-- Statistics Overview -->
+  {% if not search_text %}
+<!-- Statistics Overview -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="m-0">Performance Overview</h3>
+          <a href="/admin_summary/{{name}}" class="btn btn-primary">
+            <i class="fas fa-chart-bar"></i> View Detailed Analytics
+          </a>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="stats-card bg-light p-3 rounded">
+              <h5 class="text-primary mb-2">Total Students</h5>
+              <h3 class="m-0">{{ stats.total_students if stats else 0 }}</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card bg-light p-3 rounded">
+              <h5 class="text-primary mb-2">Total Quizzes</h5>
+              <h3 class="m-0">{{ stats.total_quizzes if stats else 0 }}</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card bg-light p-3 rounded">
+              <h5 class="text-primary mb-2">Quizzes Taken</h5>
+              <h3 class="m-0">{{ stats.quizzes_taken if stats else 0 }}</h3>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card bg-light p-3 rounded">
+              <h5 class="text-primary mb-2">Avg. Score</h5>
+              <h3 class="m-0">
+                {{ "%.1f"|format(stats.average_score) if stats and stats.average_score else "0.0" }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="m-0">Manage Subjects</h3>
+    <a href="/add_subject/{{name}}" class="btn btn-success">
+      <i class="fas fa-plus"></i> Add New Subject
+    </a>
+  </div>
+
+  {% if search_text %}
+  <div class="alert alert-info">
+    <h5 class="m-0">Search Results for "{{ search_text }}"</h5>
+  </div>
+  {% endif %} 
+  
+  {% if chapters %}
+  <div class="mt-4">
+    <h5>Matching Chapters</h5>
+    <ul class="list-group">
+      {% for chapter in chapters %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ chapter.name }}
+          <a href="/edit_chapter/{{chapter.id}}/{{name}}" class="btn btn-sm btn-outline-primary">Edit</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if quizzes %}
+  <div class="mt-4">
+    <h5>Matching Quizzes</h5>
+    <ul class="list-group">
+      {% for quiz in quizzes %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ quiz.name }}
+          <a href="/edit_quiz/{{quiz.id}}/{{name}}" class="btn btn-sm btn-outline-primary">Edit</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if users %}
+  <div class="mt-4">
+    <h5>Matching Users</h5>
+    <ul class="list-group">
+      {% for user in users %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ user.full_name }} ({{ user.email }})
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if not subjects and not chapters and not quizzes and not users %}
+  <div class="alert alert-warning mt-3">No results found for "{{ search_text }}".</div>
+{% endif %}
+
+
+  {% if subjects %}
+  <div class="row g-4">
+    {% for subject in subjects %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="card-title mb-0">{{ subject.name }}</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text text-muted mb-3">{{ subject.description }}</p>
+
+          <div class="d-flex gap-2 mb-3">
+            <a
+              href="/edit_subject/{{subject.id}}/{{name}}"
+              class="btn btn-primary btn-sm"
+            >
+              <i class="fas fa-edit"></i> Edit
+            </a>
+            <a
+              href="/add_chapter/{{subject.id}}/{{name}}"
+              class="btn btn-success btn-sm"
+            >
+              <i class="fas fa-plus"></i> Add Chapter
+            </a>
+            <a
+              href="/delete_subject/{{subject.id}}/{{name}}"
+              class="btn btn-danger btn-sm"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </a>
+          </div>
+
+          {% if subject.chapters %}
+          <div class="chapters-section">
+            <h6 class="border-bottom pb-2 mb-3">Chapters</h6>
+            <div class="list-group">
+              {% for chapter in subject.chapters %}
+              <div class="list-group-item">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h6 class="mb-0">{{ chapter.name }}</h6>
+                  <div class="btn-group btn-group-sm">
+                    <a
+                      href="/edit_chapter/{{chapter.id}}/{{name}}"
+                      class="btn btn-outline-primary"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a
+                      href="/add_quiz/{{chapter.id}}/{{name}}"
+                      class="btn btn-outline-success"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </a>
+                    <a
+                      href="/delete_chapter/{{chapter.id}}/{{name}}"
+                      class="btn btn-outline-danger"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </div>
+                </div>
+
+                {% if chapter.quizzes %}
+                <div class="ms-3">
+                  {% for quiz in chapter.quizzes %}
+                  <div class="quiz-item border-start ps-3 mb-2">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="text-primary">{{ quiz.name }}</span>
+                      <div class="btn-group btn-group-sm">
+                        <a
+                          href="/edit_quiz/{{quiz.id}}/{{name}}"
+                          class="btn btn-outline-primary btn-sm"
+                        >
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a
+                          href="/add_question/{{quiz.id}}/{{name}}"
+                          class="btn btn-outline-success btn-sm"
+                        >
+                          <i class="fas fa-plus"></i>
+                        </a>
+                        <a
+                          href="/delete_quiz/{{quiz.id}}/{{name}}"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </a>
+                      </div>
+                    </div>
+
+                    {% if quiz.questions %}
+                    <div class="questions-list mt-2">
+                      {% for question in quiz.questions %}
+                      <div class="question-item border-start ps-2 py-1 mb-1">
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
+                          <small class="text-muted"
+                            >{{ question.question_statement }}</small
+                          >
+                          <div class="btn-group btn-group-sm">
+                            <a
+                              href="/edit_question/{{question.id}}/{{name}}"
+                              class="btn btn-outline-primary btn-sm"
+                            >
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <a
+                              href="/delete_question/{{question.id}}/{{name}}"
+                              class="btn btn-outline-danger btn-sm"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <h4 class="text-muted">
+      No subjects available. Add a subject to get started.
+    </h4>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+
+<!-- Additional Styles -->
+<style>
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .chapters-section {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .quiz-item {
+    border-left: 2px solid #e9ecef;
+  }
+
+  .question-item {
+    border-left: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+  }
+
+  .btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .list-group-item {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem !important;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .text-muted {
+    font-size: 0.875rem;
+  }
+
+  /* Statistics Cards Styles */
+  .stats-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .stats-card:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+  }
+
+  .stats-card h5 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  .stats-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+</style>
+{% endblock %}

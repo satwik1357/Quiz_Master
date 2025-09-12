@@ -1,0 +1,56 @@
+{% extends "user/user_layout.html" %} {% block content %}
+<div class="container my-5">
+  <h3 class="text-center text-primary mb-4">Available Quizzes</h3>
+
+  {% if subjects %} {% for subject in subjects %}
+  <div class="mb-4">
+    <h4 class="text-primary">{{ subject.name }}</h4>
+    {% for chapter in subject.chapters %}
+    <div class="mb-3">
+      <h5>{{ chapter.name }}</h5>
+      {% for quiz in chapter.quizzes %}
+      <div class="card mb-3 shadow-sm border-light">
+        <div class="card-body">
+          <h5 class="card-title">{{ quiz.name }}</h5>
+          <p class="card-text">
+            <strong>Date:</strong> {{ quiz.date_of_quiz }} <br />
+            <strong>Duration:</strong> {{ quiz.time_duration }}
+          </p>
+          {% if quiz.questions|length > 0 %}
+          <a href="/quiz/{{quiz.id}}/{{id}}" class="btn btn-primary w-100"
+            >Attempt Quiz</a
+          >
+          {% else %}
+          <button class="btn btn-secondary w-100" disabled>
+            No Questions Available
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %} {% else %}
+  <div class="alert alert-info text-center">
+    <h4 class="text-secondary">No quizzes available.</h4>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .btn-secondary:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+</style>
+{% endblock %}
