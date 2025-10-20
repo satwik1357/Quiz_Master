@@ -47,5 +47,5 @@ It allows an **Admin (Quiz Master)** to create subjects, chapters, and quizzes, 
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/quiz-master-v1.git
+git clone https://github.com/satwik1357/quiz-master-v1.git
 cd quiz-master-v1
