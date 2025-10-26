@@ -1,3 +1,18 @@
-Flask==2.3.2
-Flask-SQLAlchemy ==3.0.5
-matplotlib
+Flask==3.0.3
+Jinja2==3.1.4
+Werkzeug==3.0.3
+itsdangerous==2.2.0
+click==8.1.7
+
+# For serving in production
+gunicorn==22.0.0
+
+# Optional (if any Flask extensions)
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.34
+Flask-Login==0.6.3
+Flask-WTF==1.2.2
+WTForms==3.1.2
+
+
+Flask-Bootstrap==3.3.7.1
